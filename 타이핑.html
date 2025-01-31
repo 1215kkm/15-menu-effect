@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>타이핑 효과</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+        }
+        .typing-text {color: #fff; position: relative;}
+        .typing-text:after {content: ""; position: absolute; width: 5px; height: 100%; background: #fff; right: -7px;}
+    </style>
+</head>
+<body>
+    <div class="typing-text">동해물과 백두산이 마르고 닳도록 하나님이 보우하사 우리나라만세 </div>
+
+    <script>
+        const textElement = document.querySelector(".typing-text");
+        let textContent = textElement.innerHTML; // 원본 텍스트 저장
+        textElement.innerHTML = ""; // 초기화
+
+        const typingSpeed = 120; // 타이핑 속도 (밀리초 단위)
+
+        let charIndex = 0;
+
+        function typeText() {
+            if (charIndex < textContent.length) {
+                const char = textContent[charIndex];
+
+                // HTML 태그(<br>) 처리
+                if (char === "<") {
+                    const closingIndex = textContent.indexOf(">", charIndex);
+                    textElement.innerHTML += textContent.slice(charIndex, closingIndex + 1);
+                    charIndex = closingIndex + 1;
+                } else {
+                    const span = document.createElement("span");
+                    span.textContent = char; // 공백 포함
+                    span.classList.add("typing-char");
+                    textElement.appendChild(span);
+                }
+
+                charIndex++;
+
+                setTimeout(typeText, typingSpeed); // 일정한 속도로 출력
+            }
+        }
+
+        typeText();
+    </script>
+</body>
+</html>
